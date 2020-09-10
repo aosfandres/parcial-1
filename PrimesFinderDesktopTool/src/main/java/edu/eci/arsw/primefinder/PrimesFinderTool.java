@@ -14,18 +14,35 @@ import org.apache.http.impl.client.HttpClientBuilder;
 
 public class PrimesFinderTool {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		            
-            int maxPrim=1000;
-            
-            PrimesResultSet prs=new PrimesResultSet("john");
-            
-            PrimeFinder.findPrimes(new BigInteger("1"), new BigInteger("10000"), prs);
-            
-            System.out.println("Prime numbers found:");
-            
-            System.out.println(prs.getPrimes());
-            
+		
+        int maxPrim = 100;
+        PrimeFinder[] hilos = new PrimeFinder[4];// alamacenarhilos 
+        
+        PrimesResultSet prs = new PrimesResultSet("john");
+        
+        for (int i = 0; i < 3; i++) {
+        	Integer primer = 1 + i * (maxPrim / 4);
+            Integer fin;
+            if(i != 3){
+                 fin = (1 + (i+1) * (maxPrim / 4)) - 1;
+            }else{
+                fin = maxPrim;
+            }
+        	
+            hilos[i] = new PrimeFinder(new BigInteger(Integer.toString(primer)), new BigInteger(Integer.toString(fin)), prs);
+            hilos[i].start();
+        }
+
+        for (int i = 0; i < 3; i++) {
+            hilos[i].join();
+                       
+        }
+        
+        System.out.println("Prime numbers found:");
+        System.out.println(prs.getPrimes());
+
             
             /*while(task_not_finished){
                 try {
@@ -42,10 +59,6 @@ public class PrimesFinderTool {
                     Logger.getLogger(PrimesFinderTool.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }*/
-                        
-            
-            
-            
             
 	}
 	
