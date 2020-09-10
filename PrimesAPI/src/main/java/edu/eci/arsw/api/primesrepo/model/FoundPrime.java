@@ -10,8 +10,10 @@ public class FoundPrime
 
     String prime;
 
-    public FoundPrime()
+    public FoundPrime(String string, String string2)
     {
+    	this.user=string;
+    	this.prime=string2;
     }
 
     public String getUser()
